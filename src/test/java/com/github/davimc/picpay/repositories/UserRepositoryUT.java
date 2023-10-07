@@ -9,11 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 public class UserRepositoryUT {
@@ -30,9 +31,9 @@ public class UserRepositoryUT {
         legal = new UserLegal("nova@empresa.com", "123456", "empresa","empresa nova ltda", "60028949000121");
     }
 
-    @DisplayName("JUnit test for Given User Object when Save then Return Saved User")
+    @DisplayName("JUnit test for Given User Natural Object when Save then Return Saved User")
     @Test
-    void testGivenUserObject_whenSave_thenReturnSavedUser() {
+    void testGivenUserNatural_whenSave_thenReturnSavedUser() {
 
         // Given / Arrange
 
@@ -41,6 +42,21 @@ public class UserRepositoryUT {
 
         // Then / Assert
         assertNotNull(savedUser);
+        assertTrue(savedUser instanceof UserNatural);
+        assertTrue(savedUser.getId() > 0);
+    }
+    @DisplayName("JUnit test for Given User Legal Object when Save then Return Saved User")
+    @Test
+    void testGivenUserLegal_whenSave_thenReturnSavedUser() {
+
+        // Given / Arrange
+
+        // When / Act
+        User savedUser = repository.save(legal);
+
+        // Then / Assert
+        assertNotNull(savedUser);
+        assertTrue(savedUser instanceof UserLegal);
         assertTrue(savedUser.getId() > 0);
     }
     @DisplayName("JUnit test for Given User List when findAll then Return User List")
@@ -60,7 +76,7 @@ public class UserRepositoryUT {
         assertNotNull(userList);
         assertEquals(3, userList.size());
     }
-    @DisplayName("JUnit test for Given User List when findAll then Return User List")
+    @DisplayName("JUnit test for Given Id when findById then Return User")
     @Test
     void testGivenId_whenFind_thenReturnUser() {
 
@@ -76,4 +92,50 @@ public class UserRepositoryUT {
         assertEquals(1L, userFind.getId());
         assertTrue(userFind instanceof UserNatural);
     }
+    @DisplayName("JUnit test for Given nonexistent Id when findById then Throw Exception")
+    @Test
+    void testGivenNonexistentId_whenFind_thenThrowException() {
+
+        // Given / Arrange
+        Long nonexistentId = 1000L;
+        //User userSaved = repository.save(natural);
+
+        // When / Act
+        Optional<User> obj = repository.findById(nonexistentId);
+
+        // Then / Assert
+        assertThrows(NoSuchElementException.class, () -> obj.get());
+    }
+    @DisplayName("JUnit test for Given Email when findByEmail then Return User")
+    @Test
+    void testGivenEmail_whenFind_thenReturnUser() {
+
+        // Given / Arrange
+        String email = "bob@gmail.com";
+
+        //User userSaved = repository.save(natural);
+
+        // When / Act
+        User userFind = repository.findByEmail(email).get();
+
+        // Then / Assert
+        assertNotNull(userFind);
+        assertEquals(email, userFind.getEmail());
+    }
+    @DisplayName("JUnit test for Given nonexistent Id when findById then Throw Exception")
+    @Test
+    void testGivenNonexistentEmail_whenFind_thenThrowException() {
+
+        // Given / Arrange
+        String nonexistentEmail = "nao@existent.tv";
+        //User userSaved = repository.save(natural);
+
+        // When / Act
+        Optional<User> obj = repository.findByEmail(nonexistentEmail);
+
+        // Then / Assert
+        assertThrows(NoSuchElementException.class, () -> obj.get());
+    }
+
+
 }
