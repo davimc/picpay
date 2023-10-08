@@ -5,10 +5,10 @@
 Repositório para fazer o desafio técnico do picpay com alguns extras  
 link para o repositório: [Desafio PicPay](https://github.com/PicPay/picpay-desafio-backend)
 
-## O que pretendo aprender (*) e/ou reforçar (-)
-- [ ] Testes unitários -
+## O que pretendo aprender (*) e/ou reforçar (+)
+- [ ] Testes unitários +
 - [ ] Testes de integração * 
-- [ ] Segurança com oauth2 - 
+- [ ] Segurança com oauth2 +
 - [ ] API externa com rest template *
 - [ ] front-end web
 ## Logo mais novidades! :)
