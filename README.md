@@ -1,6 +1,5 @@
-# Desafio PicPay
-![icone-github-verte](https://github.com/davimc/picpay/assets/18607432/07958acf-601e-4929-92f6-08910cdcb0dd)
-### Em produção
+# Desafio PicPay <img src="https://github.com/davimc/picpay/assets/18607432/07958acf-601e-4929-92f6-08910cdcb0dd" style="width:30px;"/>
+> Em produção
 
 ## Objectivo
 Repositório para fazer o desafio técnico do picpay com alguns extras  
