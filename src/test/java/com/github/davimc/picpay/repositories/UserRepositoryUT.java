@@ -1,14 +1,14 @@
 package com.github.davimc.picpay.repositories;
 
+import com.github.davimc.picpay.entities.Person;
 import com.github.davimc.picpay.entities.User;
-import com.github.davimc.picpay.entities.UserLegal;
-import com.github.davimc.picpay.entities.UserNatural;
+import com.github.davimc.picpay.entities.PersonLegal;
+import com.github.davimc.picpay.entities.PersonNatural;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,13 +22,13 @@ public class UserRepositoryUT {
     @Autowired
     private UserRepository repository;
 
-    private User natural;
-    private User legal;
+    private Person natural;
+    private Person legal;
 
     @BeforeEach
     public void setup() {
-        natural  = new UserNatural("nova@pessoa.com", "123456","pessoa","nova", "35258402096");
-        legal = new UserLegal("nova@empresa.com", "123456", "empresa","empresa nova ltda", "60028949000121");
+        natural  = new PersonNatural(null,"nova", "pessoa","35258402096");
+        legal = new PersonLegal(null,"empresa","empresa nova ltda", "60028949000121");
     }
 
     @DisplayName("JUnit test for Given User Natural Object when Save then Return Saved User")
@@ -42,7 +42,7 @@ public class UserRepositoryUT {
 
         // Then / Assert
         assertNotNull(savedUser);
-        assertTrue(savedUser instanceof UserNatural);
+        assertTrue(savedUser instanceof PersonNatural);
         assertTrue(savedUser.getId() > 0);
     }
     @DisplayName("JUnit test for Given User Legal Object when Save then Return Saved User")
@@ -56,7 +56,7 @@ public class UserRepositoryUT {
 
         // Then / Assert
         assertNotNull(savedUser);
-        assertTrue(savedUser instanceof UserLegal);
+        assertTrue(savedUser instanceof PersonLegal);
         assertTrue(savedUser.getId() > 0);
     }
     @DisplayName("JUnit test for Given User List when findAll then Return User List")
@@ -90,7 +90,7 @@ public class UserRepositoryUT {
         // Then / Assert
         assertNotNull(userFind);
         assertEquals(1L, userFind.getId());
-        assertTrue(userFind instanceof UserNatural);
+        assertTrue(userFind instanceof PersonNatural);
     }
     @DisplayName("JUnit test for Given nonexistent Id when findById then Throw Exception")
     @Test
