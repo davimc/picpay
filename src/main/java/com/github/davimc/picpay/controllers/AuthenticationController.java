@@ -1,8 +1,11 @@
 package com.github.davimc.picpay.controllers;
 
 import com.github.davimc.picpay.DTO.AuthenticationDTO;
+import com.github.davimc.picpay.DTO.LoginResponseDTO;
 import com.github.davimc.picpay.DTO.RegisterDTO;
 import com.github.davimc.picpay.DTO.UserDTO;
+import com.github.davimc.picpay.entities.User;
+import com.github.davimc.picpay.services.TokenService;
 import com.github.davimc.picpay.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,21 +25,22 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private BCryptPasswordEncoder encoder;
-
     @Autowired
     private UserService service;
+    @Autowired
+    private TokenService tokenService;
 
-    /*@GetMapping
-    public*/
+
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO dto) {
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO dto) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(dto.login(), dto.password());
-
-        return ResponseEntity.ok().build();
+        var auth = authenticationManager.authenticate(usernamePassword);
+        var token = tokenService.generateToken((User) auth.getPrincipal());
+        return ResponseEntity.ok().body(new LoginResponseDTO(token));
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO newDTO) {
+    public ResponseEntity<UserDTO> register(@RequestBody @Valid RegisterDTO newDTO) {
         UserDTO dto = service.insert(newDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
