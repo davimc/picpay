@@ -1,8 +1,10 @@
 package com.github.davimc.picpay.services;
 
+import com.github.davimc.picpay.DTO.RegisterDTO;
 import com.github.davimc.picpay.DTO.UserDTO;
-import com.github.davimc.picpay.DTO.UserNewDTO;
+import com.github.davimc.picpay.entities.Person;
 import com.github.davimc.picpay.entities.User;
+import com.github.davimc.picpay.repositories.RoleRepository;
 import com.github.davimc.picpay.repositories.UserRepository;
 import com.github.davimc.picpay.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepository repository;
@@ -22,6 +27,8 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private BCryptPasswordEncoder encoder;
+    @Autowired
+    private RoleRepository roleRepository;
 
     public UserService(UserRepository repository, PersonService personService) {
         this.repository = repository;
@@ -36,13 +43,9 @@ public class UserService implements UserDetailsService {
         User user = find(id);
         return new UserDTO(user);
     }
-    @Transactional
-    public UserDTO insert (UserNewDTO dto) {
-        User user = dto.toEntity();
-        user = repository.save(user);
-        user.setPerson(personService.find(dto.getPersonId()));
-
-        return new UserDTO(user);
+    @Transactional(readOnly = true)
+    public Optional<User> findByLogin (String username) {
+        return repository.findByEmail(username);
     }
     @Override
     @Transactional(readOnly = true)
@@ -53,5 +56,16 @@ public class UserService implements UserDetailsService {
 
     public Page<UserDTO> findAll(Pageable pageable) {
         return repository.findAll(pageable).map(UserDTO::new);
+    }
+
+    public UserDTO insert(RegisterDTO dto) {
+        if(findByLogin(dto.login()).isPresent()) throw new IllegalArgumentException(dto.login() + "already registered");
+        String passwordEncrypted = encoder.encode(dto.password());
+        Person person = personService.find(dto.personId());
+        User user = new User(null, dto.login(), passwordEncrypted, person);
+        user.getRoles().addAll(dto.roles().stream().map(roleRepository::findByAuthority).collect(Collectors.toSet()));
+        user = repository.save(user);
+
+        return new UserDTO(user);
     }
 }

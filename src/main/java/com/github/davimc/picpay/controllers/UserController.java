@@ -30,13 +30,4 @@ public class UserController {
     public ResponseEntity<UserDTO> findAll(@PathVariable Long id) {
         return ResponseEntity.ok().body(service.findById(id));
     }
-
-    @PostMapping
-    public ResponseEntity<UserDTO> create(@RequestBody @Valid UserNewDTO newDto) {
-        UserDTO dto = service.insert(newDto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(dto.getId()).toUri();
-
-        return ResponseEntity.created(uri).body(dto);
-    }
 }
