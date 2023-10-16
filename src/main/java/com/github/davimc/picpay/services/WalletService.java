@@ -37,7 +37,7 @@ public class WalletService {
 
     @Transactional
     public WalletDTO create(WalletNewDTO dto) {
-        Person p = personService.find(dto.person_id());
+        Person p = personService.find(dto.personId());
         Wallet obj = new Wallet(null, dto.amount(), p);
         obj = repository.save(obj);
 
