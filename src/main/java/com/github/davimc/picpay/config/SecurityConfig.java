@@ -49,9 +49,6 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(mvcMatcherBuilder.pattern("/h2-console")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET,"/h2-console/**")).permitAll()
-
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST,"/auth/login/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST,"/auth/register/**")).permitAll()
 
@@ -61,11 +58,15 @@ public class SecurityConfig {
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/wallets/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/wallets/**")).authenticated()
 
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/transfers")).hasRole("USUARIO")
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/wallets/**")).authenticated()
 
-                        .anyRequest().authenticated()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/h2-console/**")).permitAll()
+// TODO aberto para verificar h2, modificar
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
+                .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
 
         return http.build();
     }
