@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,6 +36,12 @@ public class SecurityConfig {
 
     @Autowired
     private SecurityFilter securityFilter;
+
+    /** TODO
+     *  colocar o filtro para transctions
+     *  httpmethod.post hasRole("ROLE_USER")
+     */
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
         MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
@@ -42,14 +49,23 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(mvcMatcherBuilder.pattern("/h2-console/**")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/h2-console")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET,"/h2-console/**")).permitAll()
+
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST,"/auth/login/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST,"/auth/register/**")).permitAll()
+
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/persons/**")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/persons/**")).authenticated()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/persons/**")).permitAll()
+
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/wallets/**")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/wallets/**")).authenticated()
+
+
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
 
         return http.build();
     }
