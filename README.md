@@ -8,8 +8,9 @@ link para o repositório: [Desafio PicPay](https://github.com/PicPay/picpay-desa
 ## O que pretendo aprender (*) e/ou reforçar (+)
 - [ ] Testes unitários +
 - [ ] Testes de integração * 
-- [ ] Segurança com oauth2 +
-- [ ] API externa com rest template *
+- [x] Segurança +
+- [ ] API externa com rest template * 
+- >  API fora do ar. Irei pensar numa solução
 - [ ] front-end web
 ## Logo mais novidades! :)
 > Que a força esteja com você
