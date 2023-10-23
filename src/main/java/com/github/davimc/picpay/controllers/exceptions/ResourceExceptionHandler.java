@@ -1,5 +1,7 @@
 package com.github.davimc.picpay.controllers.exceptions;
 
+import com.github.davimc.picpay.services.exceptions.InsufficientFundsException;
+import com.github.davimc.picpay.services.exceptions.NotAuthorizedException;
 import com.github.davimc.picpay.services.exceptions.ObjectNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,30 @@ public class ResourceExceptionHandler {
         err.setTimeStamp(Instant.now());
         err.setStatus(status.value());
         err.setError("Resource not found");
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
+
+        return ResponseEntity.status(status).body(err);
+    }
+    @ExceptionHandler(NotAuthorizedException.class)
+    public ResponseEntity<StandardError> entityNotFound(NotAuthorizedException e, HttpServletRequest request){
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        StandardError err = new StandardError();
+        err.setTimeStamp(Instant.now());
+        err.setStatus(status.value());
+        err.setError("Não Autorizado");
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
+
+        return ResponseEntity.status(status).body(err);
+    }
+    @ExceptionHandler(InsufficientFundsException.class)
+    public ResponseEntity<StandardError> entityNotFound(InsufficientFundsException e, HttpServletRequest request){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError();
+        err.setTimeStamp(Instant.now());
+        err.setStatus(status.value());
+        err.setError("Fundos insuficientes");
         err.setMessage(e.getMessage());
         err.setPath(request.getRequestURI());
 
