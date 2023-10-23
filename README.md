@@ -9,8 +9,8 @@ link para o repositório: [Desafio PicPay](https://github.com/PicPay/picpay-desa
 - [ ] Testes unitários +
 - [ ] Testes de integração * 
 - [x] Segurança +
-- [ ] API externa com rest template * 
-- >  API fora do ar. Irei pensar numa solução
+- [x] API externa com rest template * 
+- > Problema: a solução da api fornecida não está mais ativa
+- > Solução: criei uma pequena api para realizar ou não a autorização
 - [ ] front-end web
 ## Logo mais novidades! :)
-> Que a força esteja com você
