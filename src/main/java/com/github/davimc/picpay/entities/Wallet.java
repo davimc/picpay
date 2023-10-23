@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -18,21 +20,22 @@ public class Wallet implements Serializable {
     private Double amount;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "person_id", referencedColumnName = "id")
-    private Person person;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
-    /*
-    * @OneToMany(mappedby = "___")
-    * private List<Transaction> transactions = new ArrayList();
-    * */
+    @OneToMany(mappedBy = "sender")
+    private List<Transfer> sended = new ArrayList<>();
+    @OneToMany(mappedBy = "receiver")
+    private List<Transfer> received = new ArrayList<>();
+
 
     public Wallet() {
     }
 
-    public Wallet(Long id, Double amount, Person person) {
+    public Wallet(Long id, Double amount, User user) {
         this.id = id;
         this.amount = amount;
-        this.person = person;
+        this.user = user;
     }
 
     public Long getId() {
@@ -47,18 +50,21 @@ public class Wallet implements Serializable {
         this.amount = amount;
     }
 
-    public Person getPerson() {
-        return person;
+    public User getUser() {
+        return user;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setUser(User user) {
+        this.user = user;
     }
-    /*
-    * public List<Transaction> getTransactions() {
-    *   return transactions;
-    * }
-    * */
+
+    public List<Transfer> getSended() {
+        return sended;
+    }
+
+    public List<Transfer> getReceived() {
+        return received;
+    }
 
     @Override
     public boolean equals(Object o) {
