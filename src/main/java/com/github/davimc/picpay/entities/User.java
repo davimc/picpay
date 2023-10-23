@@ -24,7 +24,7 @@ public class User implements Serializable, UserDetails {
     private String email;
     private String password;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id")
     private Person person;
 
