@@ -18,7 +18,7 @@ public class WalletDTO implements Serializable {
 
     public WalletDTO(Wallet obj) {
         this.id = obj.getId();
-        this.name = obj.getPerson().getName();
+        this.name = obj.getUser().getPerson().getName();
         this.amount = obj.getAmount();
     }
 
