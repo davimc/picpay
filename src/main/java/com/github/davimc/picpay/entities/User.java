@@ -1,5 +1,6 @@
 package com.github.davimc.picpay.entities;
 
+import com.github.davimc.picpay.entities.enums.NotifyChannelType;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -7,11 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+
 
 @Entity
 @Table(name = "tb_user")
@@ -34,6 +33,9 @@ public class User implements Serializable, UserDetails {
             inverseJoinColumns = @JoinColumn(name="role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "tb_channels")
+    private List<NotifyChannelType> channels = new ArrayList<>();
     public User() {
     }
 
@@ -66,6 +68,10 @@ public class User implements Serializable, UserDetails {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public Collection<NotifyChannelType> getChannels() {
+        return channels;
     }
 
     public Set<Role> getRoles() {

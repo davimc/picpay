@@ -1,6 +1,7 @@
 package com.github.davimc.picpay.DTO;
 
 import com.github.davimc.picpay.entities.User;
+import com.github.davimc.picpay.entities.enums.NotifyChannelType;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -21,16 +22,18 @@ public class UserNewDTO implements Serializable {
     private String password;
 
     @NotEmpty(message = "Role is required")
-    private List<Integer> roles = new ArrayList<>();
+    private List<Long> roles = new ArrayList<>();
 
+    private List<Integer> channels = new ArrayList<>();
     public UserNewDTO() {
     }
 
-    public UserNewDTO(Long personId, String email, String password, List<Integer> roles) {
+    public UserNewDTO(Long personId, String email, String password, List<Long> roles, List<Integer> channels) {
         this.personId = personId;
         this.email = email;
         this.password = password;
         this.roles = roles;
+        this.channels = channels;
     }
 
     public Long getPersonId() {
@@ -45,11 +48,18 @@ public class UserNewDTO implements Serializable {
         return password;
     }
 
-    public List<Integer> getRoles() {
+    public List<Long> getRoles() {
         return roles;
     }
 
+    public List<Integer> getChannels() {
+        return channels;
+    }
+
     public User toEntity() {
-        return new User(null, email, password, null);
+        User user =  new User(null, email, password, null);
+        user.getChannels().addAll(channels.stream().map(NotifyChannelType::toEnum).toList());
+
+        return user;
     }
 }

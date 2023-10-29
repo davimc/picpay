@@ -12,5 +12,6 @@ public record RegisterDTO(
         @NotNull(message = "person is required")
         Long personId,
         @NotNull(message = "Perfil is required")
-        List<String> roles) {
+        List<String> roles,
+        List<Integer> channels){
 }

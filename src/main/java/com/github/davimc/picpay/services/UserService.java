@@ -4,6 +4,7 @@ import com.github.davimc.picpay.DTO.RegisterDTO;
 import com.github.davimc.picpay.DTO.UserDTO;
 import com.github.davimc.picpay.entities.Person;
 import com.github.davimc.picpay.entities.User;
+import com.github.davimc.picpay.entities.enums.NotifyChannelType;
 import com.github.davimc.picpay.repositories.RoleRepository;
 import com.github.davimc.picpay.repositories.UserRepository;
 import com.github.davimc.picpay.services.exceptions.ObjectNotFoundException;
@@ -64,6 +65,7 @@ public class UserService implements UserDetailsService {
         Person person = personService.find(dto.personId());
         User user = new User(null, dto.login(), passwordEncrypted, person);
         user.getRoles().addAll(dto.roles().stream().map(roleRepository::findByAuthority).collect(Collectors.toSet()));
+        user.getChannels().addAll(dto.channels().stream().map(NotifyChannelType::toEnum).toList());
         user = repository.save(user);
 
         return new UserDTO(user);

@@ -22,12 +22,14 @@ import java.util.Objects;
 public class TransferService {
     private final TransferRepository repository;
     private final WalletService walletService;
+    private final RestTemplate restTemplate;
     @Autowired
-    private RestTemplate restTemplate;
+    private NotificationService notificationService;
 
-    public TransferService(TransferRepository repository, WalletService walletService) {
+    public TransferService(TransferRepository repository, WalletService walletService, RestTemplate restTemplate) {
         this.repository = repository;
         this.walletService = walletService;
+        this.restTemplate = restTemplate;
     }
     @Transactional(readOnly = true)
     protected Transfer find (Long id) {
@@ -46,18 +48,26 @@ public class TransferService {
         Wallet w1 = walletService.findByUser(user);
         Wallet w2 = walletService.find(dto.receiver());
 
-        authorizationService();
-        walletService.transfer(w1,w2, dto.amount());
-        Transfer obj = repository.save(new Transfer(null, dto.amount(),w1, w2));
-        return new TransferDTO(obj);
+        try {
+            authorizationService();
+            walletService.transfer(w1, w2, dto.amount());
+            Transfer obj = repository.save(new Transfer(null, dto.amount(), w1, w2));
+
+            notificationService.notify(user, w2.getUser(), "Transfer");
+            return new TransferDTO(obj);
+        }catch (NullPointerException e) {
+            throw new NotAuthorizedException("Não autorizado pelo servidor");
+        }
     }
 
-    private void authorizationService() {
-        var response = restTemplate.getForEntity("http://localhost:8081/authorization/transfer", Map.class);
+    private void authorizationService() throws NullPointerException{
 
-        String result = Objects.requireNonNull(response.getBody()).get("message").toString();
-        if(result.equalsIgnoreCase("Não Autorizado"))
-            throw new NotAuthorizedException(result + " pelo servidor");
+            var response = restTemplate.getForEntity("http://localhost:8081/authorization/transfer", Map.class);
+
+            String result = Objects.requireNonNull(response.getBody()).get("message").toString();
+            if (result.equalsIgnoreCase("Não Autorizado"))
+                throw new NotAuthorizedException(result + " pelo servidor");
+
     }
 
     /*private boolean authorizeTransfer(User user, BigDecimal value) {

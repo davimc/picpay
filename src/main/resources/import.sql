@@ -23,5 +23,8 @@ INSERT INTO tb_wallet (user_id, amount) VALUES (2, 10.0)
 INSERT INTO tb_wallet (user_id, amount) VALUES (3, 50.0)
 INSERT INTO tb_wallet (user_id, amount) VALUES (4, 50.0)
 
+INSERT INTO tb_channels(user_id, channels) VALUES (1,1);
+INSERT INTO tb_channels(user_id, channels) VALUES (1,2);
+
 INSERT INTO tb_transfer (amount, sender_id, receiver_id) VALUES (100,1,2);
 INSERT INTO tb_transfer (amount, sender_id, receiver_id) VALUES (10,4,3);

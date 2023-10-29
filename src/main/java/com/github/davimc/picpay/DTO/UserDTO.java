@@ -1,9 +1,12 @@
 package com.github.davimc.picpay.DTO;
 
 import com.github.davimc.picpay.entities.User;
+import com.github.davimc.picpay.entities.enums.NotifyChannelType;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class UserDTO implements Serializable {
@@ -13,11 +16,13 @@ public class UserDTO implements Serializable {
     private Long id;
     private String name;
     private String email;
+    private List<String> channels = new ArrayList<>();
 
     public UserDTO(User user) {
         id = user.getId();
         name = user.getPerson().getName();
         email = user.getEmail();
+        channels = user.getChannels().stream().map(NotifyChannelType::getQualifier).toList();
     }
 
     public Long getId() {
@@ -30,6 +35,10 @@ public class UserDTO implements Serializable {
 
     public String getEmail() {
         return email;
+    }
+
+    public List<String> getChannels() {
+        return channels;
     }
 
     @Override
