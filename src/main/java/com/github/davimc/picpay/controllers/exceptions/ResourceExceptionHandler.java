@@ -28,7 +28,7 @@ public class ResourceExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
     @ExceptionHandler(NotAuthorizedException.class)
-    public ResponseEntity<StandardError> entityNotFound(NotAuthorizedException e, HttpServletRequest request){
+    public ResponseEntity<StandardError> notAuthorized(NotAuthorizedException e, HttpServletRequest request){
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         StandardError err = new StandardError();
         err.setTimeStamp(Instant.now());
