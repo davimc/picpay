@@ -8,6 +8,7 @@ link para o repositório: [Desafio PicPay](https://github.com/PicPay/picpay-desa
 ## O que pretendo aprender (*) e/ou reforçar (+)
 - [ ] Testes unitários +
 - [ ] Testes de integração *
+- [x] Docker
 - [x] Padrões de projeto
 - > Utilizei uma mistura de observer e strategy  
 para tentar criar o comportamento de notificação
