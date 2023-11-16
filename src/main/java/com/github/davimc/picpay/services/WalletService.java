@@ -35,7 +35,11 @@ public class WalletService {
     @Transactional(readOnly = true)
     protected Wallet findByUser(User user) {
         return repository.findByUser(user);
+    }
 
+    @Transactional(readOnly = true)
+    public WalletDTO findByUserDTO(User user) {
+        return new WalletDTO(findByUser(user));
     }
     @Transactional(readOnly = true)
     public WalletDTO findByID(Long id) {

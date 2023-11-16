@@ -11,6 +11,7 @@ public class WalletDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     private Long id;
     private String name;
+    private String email;
     private Double amount;
 
     public WalletDTO() {
@@ -19,6 +20,7 @@ public class WalletDTO implements Serializable {
     public WalletDTO(Wallet obj) {
         this.id = obj.getId();
         this.name = obj.getUser().getPerson().getName();
+        email = obj.getUser().getEmail();
         this.amount = obj.getAmount();
     }
 
@@ -28,6 +30,10 @@ public class WalletDTO implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public Double getAmount() {
