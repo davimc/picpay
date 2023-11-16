@@ -20,6 +20,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("auth")
+@CrossOrigin(origins="http://localhost:5173/")
 public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
