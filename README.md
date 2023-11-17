@@ -17,4 +17,8 @@ para tentar criar o comportamento de notificação
 - > Problema: a solução da api fornecida não está mais ativa
 - > Solução: criei uma pequena api para realizar ou não a autorização
 - [ ] front-end web
+
+## TODOs
+- Create projection para otimizar chamada no banco de dados (Wallet)
+- Resolver problema de validação CPF/CNPJ (Person)
 ## Logo mais novidades! :)
