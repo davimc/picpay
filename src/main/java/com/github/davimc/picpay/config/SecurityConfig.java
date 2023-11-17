@@ -40,11 +40,6 @@ public class SecurityConfig {
     @Autowired
     private SecurityFilter securityFilter;
 
-    /** TODO
-     *  colocar o filtro para transctions
-     *  httpmethod.post hasRole("ROLE_USER")
-     */
-
     @Bean
     @Profile("test")
     @Order(1)
@@ -75,7 +70,6 @@ public class SecurityConfig {
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/wallets/**")).authenticated()
 
                         .requestMatchers(mvcMatcherBuilder.pattern("/h2-console/**")).permitAll()
-// TODO aberto para verificar h2, modificar
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
