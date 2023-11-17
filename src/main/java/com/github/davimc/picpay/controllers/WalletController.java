@@ -29,6 +29,8 @@ public class WalletController {
         return ResponseEntity.ok().body(service.findAll(pageable));
     }
 
+    // TODO Create projection para otimizar chamada no banco de dados
+
     @GetMapping("/logged")
     public ResponseEntity<WalletDTO> findByLoggedUser(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok()
