@@ -1,9 +1,9 @@
 package com.github.davimc.picpay.entities.enums;
 
-import infra.notification.Notify;
-import infra.notification.NotifyApp;
-import infra.notification.NotifyEmail;
-import infra.notification.NotifySms;
+import com.github.davimc.picpay.notification.Notify;
+import com.github.davimc.picpay.notification.NotifyApp;
+import com.github.davimc.picpay.notification.NotifyEmail;
+import com.github.davimc.picpay.notification.NotifySms;
 
 public enum NotifyChannelType {
     EMAIL(1, "e-mail", new NotifyEmail()),

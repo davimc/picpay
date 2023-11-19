@@ -1,6 +1,5 @@
-package infra.notification;
+package com.github.davimc.picpay.notification;
 
-import com.github.davimc.picpay.entities.Notification;
 import com.github.davimc.picpay.entities.User;
 
 public class NotifyEmail implements Notify{
