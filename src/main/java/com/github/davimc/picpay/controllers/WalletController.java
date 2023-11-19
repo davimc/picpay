@@ -16,6 +16,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/wallets")
+@CrossOrigin(origins = "http://localhost:5173/")
 public class WalletController {
 
     private final WalletService service;
