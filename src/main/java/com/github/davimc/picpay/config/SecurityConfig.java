@@ -63,11 +63,11 @@ public class SecurityConfig {
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/persons/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/persons/**")).permitAll()
 
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/wallets/**")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/wallets/**")).authenticated()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/wallets/**")).authenticated()
+
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/notifications/**")).authenticated()
 
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/transfers")).hasRole("USUARIO")
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/wallets/**")).authenticated()
 
                         .requestMatchers(mvcMatcherBuilder.pattern("/h2-console/**")).permitAll()
                         .anyRequest().permitAll()
