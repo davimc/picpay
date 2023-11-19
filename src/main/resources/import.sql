@@ -28,3 +28,5 @@ INSERT INTO tb_channels(user_id, channels) VALUES (1,2);
 
 INSERT INTO tb_transfer (amount, sender_id, receiver_id) VALUES (100,1,2);
 INSERT INTO tb_transfer (amount, sender_id, receiver_id) VALUES (10,4,3);
+
+INSERT INTO tb_notification (message, notifier_id, notified_id,read) VALUES ('100.00', 1, 2, false)

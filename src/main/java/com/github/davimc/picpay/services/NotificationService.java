@@ -27,6 +27,12 @@ public class NotificationService {
         return new NotificationDTO(user);
     }
     @Transactional(readOnly = true)
+    public Page<NotificationDTO> findByUser(Pageable pageable, User user) {
+        Page<Notification> obj = repository.findByUser(pageable, user);
+
+        return obj.map(NotificationDTO::new);
+    }
+    @Transactional(readOnly = true)
     public Page<NotificationDTO> findAll(Pageable pageable) {
         return repository.findAll(pageable).map(NotificationDTO::new);
     }
