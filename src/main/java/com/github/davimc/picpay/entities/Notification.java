@@ -3,6 +3,8 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -21,6 +23,8 @@ public class Notification implements Serializable {
     @ManyToOne
     @JoinColumn(name = "notified_id")
     private User notified;
+
+    private LocalDateTime createdAt;
     private boolean read;
     public Notification() {
     }
@@ -31,6 +35,7 @@ public class Notification implements Serializable {
         this.notifier = notifier;
         this.notified = notified;
         read = false;
+        createdAt = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -67,6 +72,14 @@ public class Notification implements Serializable {
 
     public void setRead(boolean read) {
         this.read = read;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override

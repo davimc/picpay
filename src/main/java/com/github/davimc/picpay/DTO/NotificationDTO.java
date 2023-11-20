@@ -1,9 +1,11 @@
 package com.github.davimc.picpay.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.davimc.picpay.entities.Notification;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class NotificationDTO implements Serializable {
@@ -15,14 +17,18 @@ public class NotificationDTO implements Serializable {
     private String notifierName;
     private String notifiedName;
 
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+    private LocalDateTime createdAt;
+
     public NotificationDTO() {
     }
 
-    public NotificationDTO(Long id, String message, String notifierName, String notifiedName) {
+    public NotificationDTO(Long id, String message, String notifierName, String notifiedName, LocalDateTime createdAt) {
         this.id = id;
         this.message = message;
         this.notifierName = notifierName;
         this.notifiedName = notifiedName;
+        this.createdAt = createdAt;
     }
 
     public NotificationDTO(Notification obj) {
@@ -30,6 +36,7 @@ public class NotificationDTO implements Serializable {
         this.message = obj.getMessage();
         this.notifierName = obj.getNotifier().getPerson().getName();
         this.notifiedName = obj.getNotified().getPerson().getName();
+        createdAt = obj.getCreatedAt();
     }
 
     public Long getId() {
@@ -46,6 +53,10 @@ public class NotificationDTO implements Serializable {
 
     public String getNotifiedName() {
         return notifiedName;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     @Override
